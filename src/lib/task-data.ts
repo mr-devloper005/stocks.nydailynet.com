@@ -7,6 +7,33 @@ import { getHomeEditorialMockPosts } from "./home-editorial-mock";
 const getTaskContentType = (task: TaskKey) =>
   SITE_CONFIG.tasks.find((item) => item.key === task)?.contentType || task;
 
+const VALID_TASK_KEYS: TaskKey[] = [
+  "listing",
+  "classified",
+  "article",
+  "image",
+  "profile",
+  "social",
+  "pdf",
+  "org",
+  "sbm",
+  "comment",
+  "mediaDistribution",
+];
+
+export const parseTaskKeysFromEnv = (
+  raw: string | undefined,
+  fallback: TaskKey[]
+): TaskKey[] => {
+  if (!raw) return fallback;
+  const keys = raw
+    .split(",")
+    .map((value) => value.trim())
+    .filter(Boolean) as TaskKey[];
+  const valid = keys.filter((key): key is TaskKey => VALID_TASK_KEYS.includes(key));
+  return valid.length ? valid : fallback;
+};
+
 const getFallbackMockPosts = (task: TaskKey) =>
   task === "mediaDistribution" ? getHomeEditorialMockPosts() : getMockPostsForTask(task);
 
@@ -78,6 +105,31 @@ export const fetchTaskPosts = async (
   } catch {
     return allowMockFallback ? getFallbackMockPosts(task).slice(0, limit) : [];
   }
+};
+
+export const fetchPostsForTasks = async (
+  tasks: TaskKey[],
+  limitPerTask = 30,
+  options?: { allowMockFallback?: boolean; fresh?: boolean; revalidate?: number }
+) => {
+  const settled = await Promise.all(
+    tasks.map(async (task) => {
+      const posts = await fetchTaskPosts(task, limitPerTask, options);
+      return posts.map((post) => ({ ...post, taskKey: task }));
+    })
+  );
+
+  const deduped = new Map<string, (SitePost & { taskKey: TaskKey })>();
+  settled.flat().forEach((post) => {
+    const key = post.slug || post.id;
+    if (!deduped.has(key)) deduped.set(key, post);
+  });
+
+  return Array.from(deduped.values()).sort((a, b) => {
+    const at = a.publishedAt ? new Date(a.publishedAt).getTime() : 0;
+    const bt = b.publishedAt ? new Date(b.publishedAt).getTime() : 0;
+    return bt - at;
+  });
 };
 
 export const fetchTaskPostBySlug = async (task: TaskKey, slug: string) => {
