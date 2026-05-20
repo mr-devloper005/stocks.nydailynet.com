@@ -1,9 +1,7 @@
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, Users, Target, Sparkles } from "lucide-react";
+import { ArrowRight, Users, Target, Sparkles } from "lucide-react";
 import { NavbarShell } from "@/components/shared/navbar-shell";
 import { Footer } from "@/components/shared/footer";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { mockTeamMembers } from "@/data/mock-data";
 import { SITE_CONFIG } from "@/lib/site-config";
 
 
@@ -91,40 +89,6 @@ export default function AboutPage() {
                     <p className="mt-2 text-sm leading-8 text-[#4a5366]">{value.description}</p>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Team Section */}
-      <section className="border-y border-[#e5e8f0] bg-[#EEEEEE]/80">
-        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:py-18">
-          <div className="text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#6B7291]">Our Team</p>
-            <h2 className="mt-4 font-[family-name:var(--font-display)] text-3xl font-semibold tracking-[-0.02em] text-[#262E53] sm:text-4xl">
-              Meet the people behind the platform
-            </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-[#4a5366] sm:text-base">
-              A diverse team of creators, developers, and community builders passionate about making knowledge sharing better.
-            </p>
-          </div>
-          
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {mockTeamMembers.map((member) => (
-              <div key={member.id} className="rounded-[2rem] border border-[#e2e6ef] bg-white p-6 shadow-[0_12px_40px_rgba(38,46,83,0.06)] transition hover:-translate-y-0.5 hover:shadow-[0_18px_50px_rgba(38,46,83,0.1)]">
-                <div className="flex items-center gap-4">
-                  <Avatar className="h-16 w-16">
-                    <AvatarImage src={member.avatar} alt={member.name} />
-                    <AvatarFallback className="bg-[#3E85BD] text-white">{member.name.charAt(0)}</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <p className="text-lg font-semibold text-[#262E53]">{member.name}</p>
-                    <p className="text-sm font-medium text-[#3E85BD]">{member.role}</p>
-                  </div>
-                </div>
-                <p className="mt-4 text-sm leading-8 text-[#4a5366]">{member.bio}</p>
-                <p className="mt-3 text-xs text-[#6B7291]">{member.location}</p>
               </div>
             ))}
           </div>

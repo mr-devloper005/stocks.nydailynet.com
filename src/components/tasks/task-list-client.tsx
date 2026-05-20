@@ -23,7 +23,7 @@ export function TaskListClient({ task, initialPosts, category }: Props) {
 
   const merged = useMemo(() => {
     const bySlug = new Set<string>();
-    const combined: Array<SitePost & { localOnly?: boolean; task?: TaskKey }> = [];
+    const combined: Array<SitePost & { localOnly?: boolean; task?: TaskKey; taskKey?: TaskKey }> = [];
 
     localPosts.forEach((post) => {
       if (post.slug) {
@@ -136,8 +136,9 @@ export function TaskListClient({ task, initialPosts, category }: Props) {
       >
         {filtered.map((post) => {
           const localOnly = (post as any).localOnly;
-          const href = localOnly ? `/local/${task}/${post.slug}` : buildPostUrl(task, post.slug);
-          return <TaskPostCard key={post.id} post={post} href={href} taskKey={task} />;
+          const effectiveTask = ((post as any).taskKey || task) as TaskKey;
+          const href = localOnly ? `/local/${effectiveTask}/${post.slug}` : buildPostUrl(effectiveTask, post.slug);
+          return <TaskPostCard key={post.id} post={post} href={href} taskKey={effectiveTask} />;
         })}
       </div>
     </div>

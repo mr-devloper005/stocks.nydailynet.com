@@ -4,7 +4,7 @@ import { NavbarShell } from '@/components/shared/navbar-shell'
 import { Footer } from '@/components/shared/footer'
 import { TaskListClient } from '@/components/tasks/task-list-client'
 import { SchemaJsonLd } from '@/components/seo/schema-jsonld'
-import { fetchTaskPosts } from '@/lib/task-data'
+import { fetchPostsForTasks, fetchTaskPosts, parseTaskKeysFromEnv } from '@/lib/task-data'
 import { SITE_CONFIG, getTaskConfig, type TaskKey } from '@/lib/site-config'
 import { CATEGORY_OPTIONS, normalizeCategory } from '@/lib/categories'
 import { taskIntroCopy } from '@/config/site.content'
@@ -46,7 +46,17 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
   }
 
   const taskConfig = getTaskConfig(task)
-  const posts = await fetchTaskPosts(task, 30)
+  const configuredNewsTasks = parseTaskKeysFromEnv(
+    process.env.NEXT_PUBLIC_NEWS_PAGE_TASKS,
+    ['mediaDistribution']
+  )
+  const newsLimitPerTask = Math.min(
+    Math.max(Number(process.env.NEXT_PUBLIC_NEWS_PAGE_LIMIT_PER_TASK || 30) || 30, 5),
+    100
+  )
+  const posts = task === 'mediaDistribution'
+    ? await fetchPostsForTasks(configuredNewsTasks, newsLimitPerTask)
+    : await fetchTaskPosts(task, 30)
   const normalizedCategory = category ? normalizeCategory(category) : 'all'
   const intro = taskIntroCopy[task]
   const baseUrl = SITE_CONFIG.baseUrl.replace(/\/$/, '')

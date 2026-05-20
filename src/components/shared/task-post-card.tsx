@@ -54,6 +54,8 @@ const getImageUrl = (post: SitePost, content: ListingContent) => {
   return '/placeholder.svg?height=640&width=960'
 }
 
+const hasRealImage = (imageUrl: string) => !imageUrl.startsWith('/placeholder')
+
 const cardStyles = {
   'listing-elevated': {
     frame: 'rounded-[1.9rem] border border-slate-200 bg-white shadow-[0_20px_60px_rgba(15,23,42,0.08)] hover:-translate-y-1 hover:shadow-[0_28px_75px_rgba(15,23,42,0.14)]',
@@ -100,6 +102,7 @@ export function TaskPostCard({
 
   const content = getContent(post)
   const image = getImageUrl(post, content)
+  const showImage = hasRealImage(image)
   const rawCategory = content.category || post.tags?.[0] || 'Post'
   const normalizedCategory = normalizeCategory(rawCategory)
   const category = CATEGORY_OPTIONS.find((item) => item.slug === normalizedCategory)?.name || rawCategory
@@ -133,19 +136,32 @@ export function TaskPostCard({
 
     return (
       <Link href={href} className={`group flex h-full flex-col overflow-hidden transition duration-300 ${cardTone.frame}`}>
-        <div className="relative aspect-[16/11] overflow-hidden bg-slate-100">
-          <ContentImage src={image} alt={altText} fill sizes={imageSizes} quality={75} className="object-cover transition-transform duration-500 group-hover:scale-[1.04]" intrinsicWidth={960} intrinsicHeight={720} />
-          <div className="absolute inset-x-0 top-0 flex items-center justify-between p-4">
-            <span className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] ${cardTone.badge}`}>
-              <Tag className="h-3.5 w-3.5" />
-              {category}
-            </span>
-            <span className="rounded-full bg-white/85 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-900">
-              {variant === 'classified' ? 'Open now' : 'Verified'}
-            </span>
+        {showImage ? (
+          <div className="relative aspect-[16/11] overflow-hidden bg-slate-100">
+            <ContentImage src={image} alt={altText} fill sizes={imageSizes} quality={75} className="object-cover transition-transform duration-500 group-hover:scale-[1.04]" intrinsicWidth={960} intrinsicHeight={720} />
+            <div className="absolute inset-x-0 top-0 flex items-center justify-between p-4">
+              <span className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] ${cardTone.badge}`}>
+                <Tag className="h-3.5 w-3.5" />
+                {category}
+              </span>
+              <span className="rounded-full bg-white/85 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-900">
+                {variant === 'classified' ? 'Open now' : 'Verified'}
+              </span>
+            </div>
           </div>
-        </div>
+        ) : null}
         <div className="flex flex-1 flex-col p-5">
+          {!showImage ? (
+            <div className="mb-3 flex items-center justify-between gap-2">
+              <span className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] ${cardTone.badge}`}>
+                <Tag className="h-3.5 w-3.5" />
+                {category}
+              </span>
+              <span className={`text-[10px] font-semibold uppercase tracking-[0.18em] ${cardTone.muted}`}>
+                {variant === 'classified' ? 'Open now' : 'Verified'}
+              </span>
+            </div>
+          ) : null}
           <div className="flex items-center justify-between gap-3">
             <h3 className={`line-clamp-2 text-xl font-semibold leading-snug ${cardTone.title}`}>{post.title}</h3>
             <ArrowUpRight className={`h-5 w-5 shrink-0 ${cardTone.muted}`} />
@@ -189,23 +205,30 @@ export function TaskPostCard({
         href={href}
         className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[#e2e6ef] bg-white shadow-[0_12px_40px_rgba(38,46,83,0.07)] transition duration-300 hover:-translate-y-0.5 hover:border-[#3E85BD]/35 hover:shadow-[0_18px_50px_rgba(38,46,83,0.12)]"
       >
-        <div className="relative aspect-[16/10] overflow-hidden bg-[#e8ebf2]">
-          <ContentImage
-            src={image}
-            alt={altText}
-            fill
-            sizes={imageSizes}
-            quality={75}
-            className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-            intrinsicWidth={960}
-            intrinsicHeight={720}
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#262E53]/50 via-[#262E53]/5 to-transparent" />
-          <span className="absolute left-3 top-3 rounded-full bg-white/92 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#262E53] shadow-sm">
-            {category}
-          </span>
-        </div>
+        {showImage ? (
+          <div className="relative aspect-[16/10] overflow-hidden bg-[#e8ebf2]">
+            <ContentImage
+              src={image}
+              alt={altText}
+              fill
+              sizes={imageSizes}
+              quality={75}
+              className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+              intrinsicWidth={960}
+              intrinsicHeight={720}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#262E53]/50 via-[#262E53]/5 to-transparent" />
+            <span className="absolute left-3 top-3 rounded-full bg-white/92 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#262E53] shadow-sm">
+              {category}
+            </span>
+          </div>
+        ) : null}
         <div className="flex flex-1 flex-col p-5">
+          {!showImage ? (
+            <span className="mb-3 inline-flex w-fit rounded-full bg-[#262E53]/92 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-white shadow-sm">
+              {category}
+            </span>
+          ) : null}
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#6B7291]">
             {post.publishedAt
               ? new Date(post.publishedAt).toLocaleDateString('en-US', {
@@ -227,16 +250,24 @@ export function TaskPostCard({
 
   return (
     <Link href={href} className={`group flex h-full flex-col overflow-hidden transition duration-300 ${visualVariant.frame}`}>
-      <div className={`relative ${imageAspect} overflow-hidden bg-[#ede2dc]`}>
-        <ContentImage src={image} alt={altText} fill sizes={imageSizes} quality={75} className="object-cover transition-transform duration-500 group-hover:scale-[1.04]" intrinsicWidth={960} intrinsicHeight={720} />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent opacity-80" />
-        <span className={`absolute left-4 top-4 inline-flex items-center gap-1 rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] ${visualVariant.badge}`}>
-          <Tag className="h-3.5 w-3.5" />
-          {category}
-        </span>
-        {variant === 'pdf' && <span className="absolute right-4 top-4 inline-flex items-center gap-1 rounded-full bg-white/88 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-950 shadow"><FileText className="h-3.5 w-3.5" />PDF</span>}
-      </div>
+      {showImage ? (
+        <div className={`relative ${imageAspect} overflow-hidden bg-[#ede2dc]`}>
+          <ContentImage src={image} alt={altText} fill sizes={imageSizes} quality={75} className="object-cover transition-transform duration-500 group-hover:scale-[1.04]" intrinsicWidth={960} intrinsicHeight={720} />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent opacity-80" />
+          <span className={`absolute left-4 top-4 inline-flex items-center gap-1 rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] ${visualVariant.badge}`}>
+            <Tag className="h-3.5 w-3.5" />
+            {category}
+          </span>
+          {variant === 'pdf' && <span className="absolute right-4 top-4 inline-flex items-center gap-1 rounded-full bg-white/88 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-950 shadow"><FileText className="h-3.5 w-3.5" />PDF</span>}
+        </div>
+      ) : null}
       <div className={`flex flex-1 flex-col p-5 ${compact ? 'py-4' : ''}`}>
+        {!showImage ? (
+          <span className={`mb-3 inline-flex w-fit items-center gap-1 rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] ${visualVariant.badge}`}>
+            <Tag className="h-3.5 w-3.5" />
+            {category}
+          </span>
+        ) : null}
         <h3 className={`line-clamp-2 font-semibold leading-snug ${variant === 'article' ? 'text-[1.35rem]' : 'text-lg'} ${visualVariant.title}`}>{post.title}</h3>
         <p className={`mt-3 text-sm leading-7 ${variant === 'article' ? 'line-clamp-4' : 'line-clamp-3'} ${visualVariant.muted}`}>{getExcerpt(content.description || post.summary) || 'Explore this post.'}</p>
         <div className="mt-auto pt-4">

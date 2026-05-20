@@ -5,13 +5,13 @@ export const siteContent = {
     tagline: 'Press distribution platform',
   },
   footer: {
-    tagline: 'Structured releases, accountable publishing, distribution-ready output.',
+    tagline: 'Media-ready releases, accountable publishing, and multi-channel distribution.',
   },
   hero: {
     badge: 'Press wire',
     title: ['Distribute your news with editorial-grade clarity.'],
     description:
-      'Publish announcements that read well in feeds, inboxes, and syndicated surfaces—without losing the structure journalists expect.',
+      'Publish announcements that read cleanly in feeds, inboxes, and syndication surfaces without losing the structure editors expect.',
     primaryCta: {
       label: 'Browse Press Wire',
       href: '/news',
@@ -29,20 +29,20 @@ export const siteContent = {
   },
   home: {
     metadata: {
-      title: 'Press Wire and official announcements',
+      title: 'Media distribution and official announcements',
       description:
-        'Browse the latest Press Wire from releaseprCore—structured stories built for professional distribution.',
-      openGraphTitle: 'Press Wire and official announcements',
+        'Browse the latest announcements from stocks.nydailynet.com, built for newsroom-quality distribution and clear public communication.',
+      openGraphTitle: 'Media distribution and official announcements',
       openGraphDescription:
-        'National-style press distribution with clean typography, accountable metadata, and archive-friendly layouts.',
-      keywords: ['press release', 'media distribution', 'announcements', 'releaseprCore', 'newsroom'],
+        'Press wire publishing with clean typography, accountable metadata, and archive-friendly layouts.',
+      keywords: ['press release', 'media distribution', 'announcements', 'press wire', 'newsroom', 'stocks.nydailynet.com'],
     },
-    introBadge: 'Why teams use releaseprCore',
-    introTitle: 'Built for disclosure, earnings, launches, and regulated updates.',
+    introBadge: 'Why teams use stocks.nydailynet.com',
+    introTitle: 'Built for disclosures, company updates, launches, and regulated communications.',
     introParagraphs: [
       'The interface favors clarity: strong headlines, disciplined summaries, and article pages that stay legible on every device.',
       'Archives are easy to filter so readers can move by topic or date without hunting through unrelated tasks.',
-      'The system stays compatible with the full product surface—other routes remain available even when the homepage emphasizes press.',
+      'The system stays compatible with the full product surface and keeps distribution, archive, and contact flows aligned.',
     ],
     sideBadge: 'What you get',
     sidePoints: [
@@ -52,7 +52,7 @@ export const siteContent = {
       'Fast, accessible pages with lightweight motion—not heavy scripts.',
     ],
     primaryLink: {
-      label: 'Open the archive',
+      label: 'Open press archive',
       href: '/news',
     },
     secondaryLink: {
@@ -62,7 +62,7 @@ export const siteContent = {
   },
   cta: {
     badge: 'Ready when you are',
-    title: 'Need a walkthrough of plans, add-ons, or compliance-friendly workflows?',
+    title: 'Need a walkthrough of distribution plans, add-ons, or compliance-friendly workflows?',
     description:
       'Reach the team for distribution questions, media contacts, or enterprise options. We respond with clear next steps—no generic queues.',
     primaryCta: {
@@ -70,7 +70,7 @@ export const siteContent = {
       href: '/contact',
     },
     secondaryCta: {
-      label: 'View pricing',
+      label: 'View plans',
       href: '/pricing',
     },
   },
@@ -139,3 +139,4 @@ export const taskIntroCopy: Record<
     ],
   },
 }
+

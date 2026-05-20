@@ -198,6 +198,177 @@
     height: 2px;
     background: linear-gradient(90deg, #3e85bd, rgba(123, 163, 195, 0.65));
   }
+
+  .hero-orbit-panel {
+    isolation: isolate;
+  }
+
+  .hero-grid-lines {
+    background-image:
+      linear-gradient(rgba(168, 127, 231, 0.66) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(168, 127, 231, 0.66) 1px, transparent 1px);
+    background-size: 96px 96px;
+    background-position: center center;
+  }
+
+  .hero-card {
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 20px 55px rgba(25, 18, 46, 0.35);
+    overflow: hidden;
+  }
+
+  .hero-card-a {
+    left: 14%;
+    top: 8%;
+  }
+
+  .hero-card-b {
+    right: 12%;
+    bottom: 0;
+  }
+
+  .hero-chip {
+    position: absolute;
+    border: 1px solid rgba(163, 117, 231, 0.55);
+    background: rgba(245, 237, 255, 0.95);
+    color: #2b2742;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-radius: 0.3rem;
+    padding: 0.45rem 0.7rem;
+    box-shadow: 0 12px 28px rgba(40, 28, 72, 0.16);
+  }
+
+  .hero-chip-a {
+    left: 46%;
+    top: 24%;
+  }
+
+  .hero-chip-b {
+    left: 67%;
+    top: 48%;
+  }
+
+  .hero-chip-c {
+    left: 30%;
+    top: 63%;
+  }
+
+  .hero-chip-d {
+    right: 10%;
+    top: 12%;
+  }
+
+  .hero-chip-e {
+    right: 8%;
+    top: 0;
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .hero-chip-f {
+    left: 22%;
+    bottom: 11%;
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .hero-chip-g {
+    left: 4%;
+    top: 42%;
+  }
+
+  .hero-chip-h {
+    right: 21%;
+    bottom: 35%;
+  }
+
+  .hero-chip-i {
+    left: 42%;
+    top: 9%;
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .hero-chip-j {
+    right: 15%;
+    bottom: 13%;
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .hero-side-card {
+    position: absolute;
+    width: 66px;
+    border-radius: 0.55rem;
+    z-index: -1;
+    right: -48px;
+  }
+
+  .hero-side-card-a {
+    top: 50px;
+    height: 210px;
+    background: linear-gradient(180deg, #8ab5f0 0%, #4f7fda 100%);
+  }
+
+  .hero-side-card-b {
+    top: 105px;
+    right: -80px;
+    height: 165px;
+    background: linear-gradient(180deg, #f472b6 0%, #d946ef 100%);
+  }
+
+  .integration-float {
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .integration-float-slow {
+    animation: integration-float-slow-path 5.6s ease-in-out infinite;
+  }
+
+  .integration-float-fast {
+    animation: integration-float-fast-path 3.4s ease-in-out infinite;
+  }
+
+  .hero-float {
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .hero-float-slow {
+    animation: hero-float-slow-path 5.8s ease-in-out infinite;
+  }
+
+  .hero-float-fast {
+    animation: hero-float-fast-path 3.6s ease-in-out infinite;
+  }
+
+  .hero-chip-b,
+  .hero-chip-e,
+  .hero-card-b,
+  .hero-side-card-b {
+    animation-delay: 1.2s;
+  }
+
+  .hero-chip-c,
+  .hero-chip-g,
+  .hero-chip-h {
+    animation-delay: 2.1s;
+  }
 }
 
 ::-webkit-scrollbar {
@@ -371,4 +542,87 @@ body[data-motion-pack='minimal'] main > section {
 @keyframes factory-fade-in {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+@keyframes hero-float-slow-path {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  25% {
+    transform: translate3d(6px, -8px, 0);
+  }
+  50% {
+    transform: translate3d(11px, -14px, 0);
+  }
+  75% {
+    transform: translate3d(4px, -6px, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes hero-float-fast-path {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  25% {
+    transform: translate3d(-7px, 6px, 0);
+  }
+  50% {
+    transform: translate3d(-10px, -8px, 0);
+  }
+  75% {
+    transform: translate3d(-4px, 5px, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes integration-float-slow-path {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate3d(0, -8px, 0) rotate(-1.2deg);
+  }
+  50% {
+    transform: translate3d(0, -13px, 0) rotate(0.8deg);
+  }
+  75% {
+    transform: translate3d(0, -7px, 0) rotate(-0.8deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+}
+
+@keyframes integration-float-fast-path {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate3d(0, 6px, 0) rotate(1.2deg);
+  }
+  50% {
+    transform: translate3d(0, -6px, 0) rotate(-1deg);
+  }
+  75% {
+    transform: translate3d(0, 5px, 0) rotate(0.8deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-float,
+  .hero-float-slow,
+  .hero-float-fast,
+  .integration-float,
+  .integration-float-slow,
+  .integration-float-fast {
+    animation: none !important;
+  }
 }

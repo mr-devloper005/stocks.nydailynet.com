@@ -9,8 +9,8 @@ const services = [
 ]
 
 const incidents = [
-  { date: 'Mar 12, 2026', title: 'Delayed notifications', status: 'Resolved' },
-  { date: 'Feb 22, 2026', title: 'Search indexing lag', status: 'Resolved' },
+  { date: '', title: 'Delayed notifications', status: 'Resolved' },
+  { date: '', title: 'Search indexing lag', status: 'Resolved' },
 ]
 
 export default function StatusPage() {
