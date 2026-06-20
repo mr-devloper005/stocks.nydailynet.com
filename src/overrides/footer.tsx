@@ -107,7 +107,7 @@ export async function FooterOverride() {
 
         <div className="mt-12 flex flex-col gap-4 border-t border-white/10 pt-8 text-xs text-[#8b93ab] sm:flex-row sm:items-center sm:justify-between">
           <p>
-            &copy; {new Date().getFullYear()} {SITE_CONFIG.name}. All rights reserved.
+            {SITE_CONFIG.name}. All rights reserved.
           </p>
           <p className="text-[#6B7291]">{SITE_CONFIG.domain}</p>
         </div>
