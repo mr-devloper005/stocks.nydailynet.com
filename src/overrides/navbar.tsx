@@ -5,7 +5,6 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Menu, Search, X } from 'lucide-react'
 import { SITE_CONFIG } from '@/lib/site-config'
-import { siteContent } from '@/config/site.content'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/lib/auth-context'
 import dynamic from 'next/dynamic'
@@ -31,15 +30,18 @@ export function NavbarOverride() {
     <header className="sticky top-0 z-50 border-b border-[#1e2744] bg-[#262E53] text-white shadow-[0_8px_32px_rgba(15,18,32,0.35)]">
       <nav className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3.5 sm:px-6">
         <Link href="/" className="group flex min-w-0 items-center gap-3">
-          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/10 text-sm font-extrabold tracking-tight text-white ring-1 ring-white/15">
-            rC
+          <span className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white/10 ring-1 ring-white/15">
+            <img
+              src="/favicon.png?v=20260520"
+              alt={`${SITE_CONFIG.name} logo`}
+              width="52"
+              height="52"
+              className="h-[118%] w-[118%] object-cover"
+            />
           </span>
           <span className="min-w-0">
             <span className="block truncate font-[family-name:var(--font-display)] text-lg font-semibold tracking-[-0.03em] text-white">
               {SITE_CONFIG.name}
-            </span>
-            <span className="hidden text-[10px] font-semibold uppercase tracking-[0.28em] text-[#7BA3C3] sm:block">
-              {siteContent.navbar.tagline}
             </span>
           </span>
         </Link>

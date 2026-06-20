@@ -18,6 +18,40 @@ import { HOME_PAGE_OVERRIDE_ENABLED, HomePageOverride } from '@/overrides/home-p
 
 export const revalidate = 300
 
+const DEFAULT_HOME_RELEASE_TASKS: TaskKey[] = ['mediaDistribution', 'article']
+
+function parseHomeReleaseTasks(): TaskKey[] {
+  const raw = process.env.NEXT_PUBLIC_HOME_RELEASE_TASKS
+  if (!raw) return DEFAULT_HOME_RELEASE_TASKS
+  const items = raw
+    .split(',')
+    .map((value) => value.trim())
+    .filter(Boolean) as TaskKey[]
+  const valid = items.filter(
+    (value): value is TaskKey =>
+      [
+        'listing',
+        'classified',
+        'article',
+        'image',
+        'profile',
+        'social',
+        'pdf',
+        'org',
+        'sbm',
+        'comment',
+        'mediaDistribution',
+      ].includes(value)
+  )
+  return valid.length ? valid : DEFAULT_HOME_RELEASE_TASKS
+}
+
+function getHomeReleaseLimit() {
+  const parsed = Number(process.env.NEXT_PUBLIC_HOME_RELEASE_LIMIT || 16)
+  if (!Number.isFinite(parsed)) return 16
+  return Math.min(Math.max(Math.floor(parsed), 4), 40)
+}
+
 export async function generateMetadata(): Promise<Metadata> {
   return buildPageMetadata({
     path: '/',
@@ -415,10 +449,23 @@ export default async function HomePage() {
   const listingPosts = taskFeed.find(({ task }) => task.key === 'listing')?.posts || []
   const classifiedPosts = taskFeed.find(({ task }) => task.key === 'classified')?.posts || []
   const articlePosts = taskFeed.find(({ task }) => task.key === 'article')?.posts || []
+  const taskFeedMap = new Map<TaskKey, SitePost[]>(
+    taskFeed.map(({ task, posts }) => [task.key as TaskKey, posts])
+  )
+  const homeReleaseTasks = parseHomeReleaseTasks()
+  const homeReleaseLimit = getHomeReleaseLimit()
+  const aggregatedEditorial = homeReleaseTasks.flatMap((taskKey) => taskFeedMap.get(taskKey) || [])
+  const dedupedEditorial = Array.from(
+    new Map(aggregatedEditorial.map((post) => [post.id, post])).values()
+  )
   const mediaDistributionPosts =
     taskFeed.find(({ task }) => task.key === 'mediaDistribution')?.posts || []
-  const editorialRaw = articlePosts.length ? articlePosts : mediaDistributionPosts
-  const editorialPosts = editorialRaw.slice(0, 16)
+  const editorialRaw = dedupedEditorial.length
+    ? dedupedEditorial
+    : articlePosts.length
+      ? articlePosts
+      : mediaDistributionPosts
+  const editorialPosts = editorialRaw.slice(0, homeReleaseLimit)
   const imagePosts = taskFeed.find(({ task }) => task.key === 'image')?.posts || []
   const profilePosts = taskFeed.find(({ task }) => task.key === 'profile')?.posts || []
   const bookmarkPosts = taskFeed.find(({ task }) => task.key === 'sbm')?.posts || []

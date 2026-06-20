@@ -40,10 +40,10 @@ const FORM_CONFIG: Record<TaskKey, { title: string; description: string; fields:
     fields: [
       { key: 'title', label: 'Title', type: 'text', required: true },
       { key: 'summary', label: 'Summary', type: 'textarea', required: true },
-      { key: 'body', label: 'Body', type: 'richtext', required: true },
+      { key: 'body', label: 'Body', type: 'textarea', required: true },
       { key: 'category', label: 'Category', type: 'text' },
       { key: 'author', label: 'Author', type: 'text' },
-      { key: 'image', label: 'Featured image', type: 'text' },
+      { key: 'image', label: 'Featured image link', type: 'url', placeholder: 'https://example.com/cover.jpg' },
     ],
   },
   listing: {
@@ -241,6 +241,8 @@ export default function CreateTaskPage() {
 
     if (values.category) content.category = values.category;
     if (values.description) content.description = values.description;
+    if (values.body) content.body = values.body;
+    if (values.image) content.image = values.image;
     if (values.website) content.website = values.website;
     if (values.email) content.email = values.email;
     if (values.phone) content.phone = values.phone;
@@ -259,9 +261,11 @@ export default function CreateTaskPage() {
       ? values.tags.split(",").map((item) => item.trim()).filter(Boolean)
       : [];
 
-    const images = values.images
-      ? values.images.split(",").map((item) => item.trim()).filter(Boolean)
-      : [];
+    const images = taskKey === "mediaDistribution"
+      ? [values.image?.trim()].filter(Boolean) as string[]
+      : values.images
+        ? values.images.split(",").map((item) => item.trim()).filter(Boolean)
+        : [];
 
     const post = addLocalPost({
       task: taskKey,
@@ -275,8 +279,8 @@ export default function CreateTaskPage() {
     });
 
     toast({
-      title: "Saved locally",
-      description: "This post is stored only in your browser.",
+      title: "Saved",
+      description: "Your post has been saved.",
     });
 
     router.push(`/local/${taskKey}/${post.slug}`);
@@ -301,7 +305,6 @@ export default function CreateTaskPage() {
         <div className="rounded-3xl border border-border bg-card p-8 shadow-sm">
           <div className="flex flex-wrap gap-2">
             <Badge variant="secondary">{taskConfig.label}</Badge>
-            <Badge variant="outline">Local-only</Badge>
           </div>
 
           <div className="mt-6 grid gap-6">
@@ -390,7 +393,7 @@ export default function CreateTaskPage() {
           <div className="mt-8 flex flex-wrap gap-3">
             <Button onClick={handleSubmit}>
               <Save className="mr-2 h-4 w-4" />
-              Save locally
+              Save
             </Button>
             <Button variant="ghost" asChild>
               <Link href={taskConfig.route}>
